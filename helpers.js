@@ -28,51 +28,6 @@ getCustomUrl = function (user) {
   }
 }
 
-getGravatarUrl = function (user, defaultUrl) {
-  var gravatarDefault;
-  var validGravatars = ['404', 'mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
-
-  // Initials are shown when Gravatar returns 404.
-  if (Avatar.options.fallbackType !== 'initials') {
-    var valid = _.contains(validGravatars, Avatar.options.gravatarDefault);
-    gravatarDefault = valid ? Avatar.options.gravatarDefault : defaultUrl;
-  }
-  else {
-    gravatarDefault = '404';
-  }
-
-  var options = {
-    // NOTE: Gravatar's default option requires a publicly accessible URL,
-    // so it won't work when your app is running on localhost and you're
-    // using an image with either the standard default image URL or a custom
-    // defaultImageUrl that is a relative path (e.g. 'images/defaultAvatar.png').
-    default: gravatarDefault,
-    size: 200, // use 200x200 like twitter and facebook above (might be useful later)
-    secure: true
-  };
-
-  var emailOrHash = getEmailOrHash(user);
-  return Gravatar.imageUrl(emailOrHash, options);
-};
-
-// Get the user's email address or (if the emailHashProperty is defined) hash
-getEmailOrHash = function (user) {
-  var emailOrHash;
-  if (user && Avatar.options.emailHashProperty && !!getDescendantProp(user, Avatar.options.emailHashProperty)) {
-    emailOrHash = getDescendantProp(user, Avatar.options.emailHashProperty);
-  }
-  else if (user && user.emails) {
-    var emails = _.pluck(user.emails, 'address');
-    emailOrHash = emails[0] || '00000000000000000000000000000000';
-  }
-  else {
-    // If all else fails, return 32 zeros (trash hash, hehe) so that Gravatar
-    // has something to build a URL with at least.
-    emailOrHash = '00000000000000000000000000000000';
-  }
-  return emailOrHash;
-};
-
 // Returns the size class to use for an avatar
 sizeClass = function(context) {
   // Defaults are 'large', 'small', 'extra-small', but user can add new ones

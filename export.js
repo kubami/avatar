@@ -165,27 +165,11 @@ Avatar = {
       else if (svc === "custom") {
         url = getCustomUrl(user);
       }
-      else if (svc === 'none') {
-        defaultUrl = Avatar.options.defaultImageUrl || '/packages/utilities_avatar/default.png';
-        // If it's a relative path (no '//' anywhere), complete the URL
-        if (defaultUrl.indexOf('//') === -1) {
-          // Strip starting slash if it exists
-          if (defaultUrl.charAt(0) === '/') defaultUrl = defaultUrl.slice(1);
-          // Then add the relative path to the server's base URL
-          defaultUrl = Meteor.absoluteUrl() + defaultUrl;
-        }
-        url = getGravatarUrl(user, defaultUrl);
-      }
     }
 
     return url;
   },
-
-  // Create a Gravatar-compatible hash for a given email address
-  hash: function (email) {
-    return Gravatar.hash(email);
-  }
-}
+};
 
 // Call createCSS to generate the default CSS depend on the option
 Meteor.startup(function () {
